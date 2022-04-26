@@ -439,3 +439,60 @@ Predicate - warunki
 * .isEqual() =  ==
 * .not() =  !=
 * .andThen() = do laczenia funkcji razem
+
+## Serializacja (Serialization)
+
+to proces konwertowania obiektu w strumien bajtow (zapisywany w pliku .ser albo przesylany przez siec). Dzieki temu obiekt 'zapisuje swoj stan' po zakonczeniu programu. Klasa ktorej obiekty bedziemy serializowac musi implementowac interfejs `Serializable` oraz pierwsza klasa w hierarchii dziedziczenia, która nie jest serializowalna musi mieć dostępny konstruktor bezparametrowy.
+
+* Pola statyczne sie nie serializuja !
+* Pola oznaczone keywordem `transient` nie sa serializowane
+* serialVersionUID to unikalna versja ID dla zserializowanej klasy (identyczny po deserializacji)
+
+***Deserializacja*** - proces odwrotny do serializacji = konwersja strumienia bajtow w obiekt.
+
+```java
+class User implements Serializable {
+    String name;
+    String password;
+    
+    public void sayHello() {
+        System.out.println("Hello " + name);
+    }
+}
+
+class MainSerializable {
+    public static void main(String[] args) throws FileNotFoundException {
+        User user = new User();
+        user.name = "wierzba";
+        user.password = "passwd";
+        
+        FileOutputStream fileOut = new FileOutputStream("UserInfo.ser");
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        
+        out.writeObject(user);
+        out.close();
+        fileOut.close();
+        System.out.println("Object info saved!");
+        
+        long serialVersionUID = ObjectStreamClass.lookup(User.getClass()).getSerialVersionUID(); 
+        System.out.println(serialVersionUID);
+    }
+}
+
+class MainDeserialization {
+    public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException {
+           User user = null;    // Dzialamy na utworzonej klasie a nie tej zserializowanej !!!
+           FileInputStream fileIn = new FileInputStream("UserInfo.ser");
+           ObjectInputStream in = new ObjectInputStream(fileIn);
+           
+           user = (User) in.readObject();
+           
+           in.close();
+           fileIn.close();
+           
+           System.out.println(user.name);
+           System.out.println(user.password);
+           user.sayHello();
+    }
+}
+```
