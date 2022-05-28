@@ -336,6 +336,15 @@ W takim przypadku klasa implementujaca interface X musi rowniez zaimplementowac 
 public @interface ExampleAdnotation {}
 ```
 
+Dopuszczalne jest deklarowanie zmiennej typu interfejsu, ale przypisanie jej wartosci moze odbyc sie tylko za pomoca operatora `new` dla klasy ktora implementuje owy interfejs
+
+```java
+Comparable x;
+
+x = new Employee(); // poprawne tylko jesli klasa Employee implementuje interfejs Comparable
+```
+
+
 ## Watki (Threads)
 
 * Wątek (Thread) - sciezka wykonania mogaca obejmowac serie roznych wywolan metod.
