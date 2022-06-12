@@ -344,6 +344,13 @@ Comparable x;
 x = new Employee(); // poprawne tylko jesli klasa Employee implementuje interfejs Comparable
 ```
 
+Rowniez za pomoca operatora `instanceof` mozna sprawdzic czy obiekt nalezy do klasy implementujacej dany interfejs
+
+```java
+if(exampleObject instanceof Comparable) {
+    ...
+}
+```
 
 ## Watki (Threads)
 
@@ -505,3 +512,23 @@ class MainDeserialization {
     }
 }
 ```
+
+## SOLID
+
+`https://www.youtube.com/watch?v=_jDNAf3CzeY`
+
+* Single responsibility ~ kazda klasa powinna miec 1 uzytecznosc oraz nie byc przeladowana funkcjonalnosciami
+* Open-Closed ~ klasa powinna byc otwarta na rozszerzanie, a zamknieta na modyfikacje (nie powinienes przepisywac istniejacej klasy do zaimplementowania nowych funkcjonalnosci)
+* Liskov substitution ~ 
+* Interface segregation ~ interfejsy nie powinny narzucac klasom czego nie moga robic.
+* Dependency Inversion ~ komponenty powinny zalezec od abstrakcji
+
+
+
+
+
+
+
+
+
+
