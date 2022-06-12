@@ -515,7 +515,7 @@ class MainDeserialization {
 
 ## SOLID
 
-`https://www.youtube.com/watch?v=_jDNAf3CzeY`
+[Youtube video about SOLID - pretty good](https://www.youtube.com/watch?v=_jDNAf3CzeY)
 
 * Single responsibility ~ kazda klasa powinna miec 1 uzytecznosc oraz nie byc przeladowana funkcjonalnosciami
 * Open-Closed ~ klasa powinna byc otwarta na rozszerzanie, a zamknieta na modyfikacje (nie powinienes przepisywac istniejacej klasy do zaimplementowania nowych funkcjonalnosci)
