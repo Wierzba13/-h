@@ -1,6 +1,6 @@
 <!-- https://aimweb.pl/sciagawka-git-komendy-ktore-warto-znac/ -->
 
-# Tworzenie repo && git log
+## Tworzenie repo && git log
 
 | Komenda          | Opis            |
 | ---------------- | :-------------- |
@@ -13,7 +13,7 @@ git log --grep="test" | szuka commita z opisem 'test'
 
 ---
 
-# Komendy dot. plików i katalogów
+## Komendy dot. plików i katalogów
 
 | Komenda          | Opis            |
 | ---------------- | :-------------- |
@@ -36,7 +36,7 @@ git checkout 925760e fileName | przywraca plik z danego commitu
 
 ---
 
-# Komendy dot. branchy
+## Komendy dot. branchy
 
 | Komenda          | Opis            |
 | ---------------- | :-------------- |
@@ -47,7 +47,7 @@ git checkout master | przenosi nas do aktualnego stanu brancha master
 
 ---
 
-# Praca z zdalnym repo
+## Praca z zdalnym repo
 
 | Komenda          | Opis            |
 | ---------------- | :-------------- |
@@ -55,7 +55,17 @@ git push | wysłanie informacji z lokalnego do zdalnego repo
 git push -u origin main | wysyła zmiany na zdalne repo, -u pozwala określić adres repo (origin main)
 git remote add origin URL | pozwala podpiąć zdalne repo o adresie URL i aliasie 'origin'
 git fetch | pobranie zmian z zdalnego repo
-git merge origin/main | ustawia zmiany w lokalnym repo na te które znajdują się na zdalnym repo (wpierw trzeba wykonać git fetch)
+
+---
+
+## git rebase && git merge
+
+Aby polaczyc dwa branche:
+1. Na branchu `main` zaciagnij najnowsze zmiany - `git pull`
+2. Na branchu, na którym dokonywałeś zmian po wykonaniu commitow wykonaj - `git rebase main`
+3. Jezeli pojawia sie konflikty rozwiaz je
+4. Na branchu main dokonaj merge'a - `git merge <nazwa_brancha>`
+5. Usun branch na ktorym dokonywales zmiany - `git branch --delete <nazwa_brancha>`
 
 ---
 
