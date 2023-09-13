@@ -4,9 +4,9 @@
 
 | Modyfikator   | Klasa    | Pakiet | Podklasa | Inni |
 |:----- |:-------:|:----------------:|:----------------:|:----------------:|
-| public | tak | tak | tak | tak |
-| protected | tak | tak | tak | nie |
-| private | tak | nie | nie | nie |  
+| public | + | + | + | + |
+| protected | + | + | + | - |
+| private | + | - | - | - |  
 
 ## Typy prymitywne i referencyjne
 
@@ -20,59 +20,123 @@ Typy prymitywne
 | long  | 64bits  | 0 |
 | float  | 32bits  | 0.0 |
 | double  | 64bits  | 0.0 |
-| char  | 16bits  | - |
-| boolean  | 64bits  | - |
+| char  | 16bits  | \u0000 (*) |
+| boolean  | 8bits  | false |
 
-short - int => rzutowanie niejawne (kompilator zrobi to automatycznie), gdyz short ma mniejsza wartosc niz int
-int - short => rzutowanie jawne, gdyz int ma wiekszy zakres niz short
+\* Jest to znak o zerowym kodzie Unicode i reprezentuje brak znaku lub znak pusty
 
-Float pisane z duzej litery to 'opakowania' - klasa lub referencja, ktora potrafia przyjac 'null',
-typy danych pisane z malej litery to typy prymitywne gwarantujace przypisanie domyslnej wartosci, jezeli nie przypiszemy wartosci sami.
+short => int ~ rzutowanie niejawne (kompilator zrobi to automatycznie), gdyz short ma mniejsza wartosc niz int  
+int => short ~ rzutowanie jawne, gdyz int ma wiekszy zakres niz short
+
+* Float (pisane z duzej litery - to 'opakowania') - klasa lub referencja, ktora potrafia przyjac `null`.  
+* Typy danych pisane z malej litery to typy prymitywne gwarantujace przypisanie domyslnej wartosci, jezeli nie przypiszemy wartosci sami.
+* W typach prymitywnych operujemy w kodzie bezposrednio na ich wartosciach, a nie na referencjach do nich.
 
 ```java
 int a = 20;
 Integer b = 13;
-System.out.println(a+b);
-System.out.println(Integer.MAX_VALUE)
+System.out.println(a+b); // 33
+System.out.println(Integer.MAX_VALUE);
+
 Float c = Float.valueOf(a);
 float d = Float.parseFloat(b.toString());
-System.out.println(c);
-System.out.println(d);
+System.out.println(c); // 20.0
+System.out.println(d); // 13.0
 
 // BigDecimal nie mozna przypisac wartosci double i odwrotnie
 BigDecimal price = BigDecimal.valueOf(1932.58);
 ```
 
-## Kod w tym bloku kodu zostanie wykonany tylko raz, podczas ladowania klasy do pamieci
+## Blok static
+
+Kod w tym bloku kodu zostanie wykonany tylko raz, podczas ladowania klasy do pamieci
 
 ```java
-static {
-    // code...
+public class ExampleClass {
+    public static int number = 0;
+
+    static {
+        number = 42;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(number); // 42
+    }
 }
 ```
 
 ## Przeciążanie metody
 
-Przeciazenie metody jest napisaniem dla niej wariantu przyjmujacego inny typ lub ilosc argumentow.
-Aby przeciazyc metode musza byc spelnione nastepujacy warunek **nazwa i zwracany przez metode typ danych jest identyczny**
+* Przeciazenie metody to implementacja wariantu metody ktora to przyjmuje inny typ danych dla jej argumentow lub jej inna ilosc.
+* Podczas wywolywania metody JVM automatycznie wybierze odpowiedni wariant metody na podstawie podanych argumentow
+* Aby przeciazyc metode musza byc spelnione nastepujacy warunek **nazwa i zwracany przez metode typ danych jest identyczny**
 
-## Wiele argumentów dla metody
+## Metody varargs - metody z nieznana liczba argumentow
+
+W języku Java można tworzyć metody, które przyjmują zmienną liczbę argumentów (zwane także metodami *varargs*), dzięki czemu do takich metod  można przekazywać różną liczbę argumentów.
+
+* Aby zadeklarować taką metodę, należy użyć trzech kropek `...` po typie argumentu.
+* Argumenty varargs są traktowane jak tablica danego typu.
 
 ```java
-public double sumMoney(double... moneys) {
-    // code ...
+public class ExampleClass {
+
+    static double sumMoney(double... numbers) {
+        double sum = 0;
+
+        for (double number : numbers) {
+            sum += number;
+        }
+
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        double totalMoney1 = sumMoney(20.0, 15.0, 3.0);
+        double totalMoney2 = sumMoney(15.0, 30.0, 40.0);
+
+        System.out.println(totalMoney1); // 38.0
+        System.out.println(totalMoney2); // 85.0
+    }
 }
 ```
 
-Metoda ta przyjmuje wiele argumentow typu double zapisywanych do tablicy o nazwie **moneys**
-
 ## Przeslanianie metod
 
-W hierarchii klas **metoda** klasy pochodnej moze miec taki sam typ zwracany i sygnature jak metoda w klasie bazowej. Mowimy wtedy o przeslanianiu **metody** klasy bazowej. Wywolanie przeslonietej **metody** przez klase pochodna spowoduje ZAWSZE wywolanie wersji **metody** zdefiniowanej w klasie pochodnej.
+W hierarchii klas metoda klasy pochodnej moze miec taki sam typ zwracany i sygnature jak metoda w klasie bazowej. Mowimy wtedy o przeslanianiu metody klasy bazowej. Wywolanie przeslonietej metody przez klase pochodna spowoduje **ZAWSZE** wywolanie implementacji metody zdefiniowanej w klasie pochodnej.
 
-### Konstruktor
+```java
+class Animal {
+    void sound() {
+        System.out.println("Default sound");
+    }
+}
 
-Jest to metoda wywolywana podczas tworzenia obiektu
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("HauHau");
+    }
+}
+
+class Cat extends Animal {
+    //code there...
+}
+
+class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        Cat cat = new Cat();
+
+        dog.sound(); // HauHau
+        cat.sound(); // Default sound
+    }
+}
+```
+
+## Konstruktor
+
+Jest to metoda wywolywana podczas tworzenia obiektu. Przyklad wywolania domyslnego konstruktora:
 
 ```java
 Person obj = new Person();
@@ -115,7 +179,7 @@ Aby to uzystakc trzeba:
 
 ## Instance initializer
 
-Kod ktory wykona sie przed wywolaniem konstruktora
+Kod ktory wykona sie przed wywolaniem konstruktora, przydatny mechanizm do wykonania operacji inicjalizacyjnych, które są wspólne dla wszystkich konstruktorów w danej klasie.
 
 ```java
 { 
@@ -131,13 +195,24 @@ public Constructor() {
 
 W javie pamiec dzielimy na: **stack oraz heap**
 
-| stack  | heap            |
-| :----- |:---------------:|
-| pamiec dla watku, lokoalne zmienne, metody (przechowuje typy prymitywne i referencje do obiektow) | pamiec wspoldzielona, dostepna z roznych watkow i metod (przechowuja Klasy i Obiekty) |
+### Stack (stos)
+
+* krotki czas zycia zmiennych (od klamry do klamry) - zmienne lokalne
+* szybszy dostep do pamieci
+* alokacja pamieci odbywa sie automatycznie
+* pamiec na stosie jest przydzielana statycznie oraz jest ograniczona
+* stos wykorzystywany do przechowywania danych krotkotrwalych
+
+### Heap (Sterta)
+
+* nieuzywane obiekty sa usuwane przez garbage collector
+* wolniejszy dostep do pamieci poniewaz sterta wymaga alokacji i dealokacji oraz obslugi garbage collectora
+* alokacja pamieci jest manualna - programista musi jawnie tworzyc/usuwac obiekty
+* pamiec na stercie jest przydzielana dynamicznie w miare potrzeb - to tu przechowuje sie obiekty o zmiennych rozmiarach
 
 ## Typy generyczne (generics)
 
-Pozwalaja na przypisanie zaprojektowanie klasy bez znajomosci typu danych ktory bedziemy wykorzystywac. Bedzie on nadany pozniej - co pozwala na wieksza uniwersalnosc zaimplementowanej klasy. Wykorzystujemy tu litere ktora podana w <> po nazwie klasy (tu 'Y' - parametr typu klasy).
+Pozwalaja na zaprojektowanie klasy bez znajomosci typu danych ktory bedziemy wykorzystywac. Bedzie on nadany pozniej - co pozwala na wieksza uniwersalnosc zaimplementowanej klasy. Wykorzystujemy tu operator diamentu `<>`
 
 | Litera  | Opis            |
 | :------ |:---------------:|
@@ -147,8 +222,8 @@ Pozwalaja na przypisanie zaprojektowanie klasy bez znajomosci typu danych ktory 
 | K | key |
 
 ```java
-// Typ Y musi rozszerzac klase o nazwie 'ClassName'
-public class Generic<Y extends ClassName> {
+// Typ T musi rozszerzac klase o nazwie 'ClassName'
+public class Generic<T extends ClassName> {
     // code ...
 }
 
@@ -159,7 +234,8 @@ List<? extends ClassName>
 ## Enum
 
 To specjalny 'typ klasy' przechowywjacy okreslony zbior wartosci (tu nt, pogody ).
-Wartosci w ENUM sa **public static final**.
+
+* Wartosci w ENUM sa **public static final**.
 
 ```java
 public enum Weather {
@@ -189,30 +265,33 @@ class Main {
 }
 ```
 
-## ArrayList<E>
+## ArrayList
 
-Lista stringow, liczbe elementow mozna pominac by lista dostosowywala rozmiar do swoich potrzeb
+Jest to dynamiczna tablica (lista), która automatycznie dostosowuje swój rozmiar do liczby elementów w niej przechowywanych. Oznacza to, że nie musisz z góry określać jej rozmiaru i możesz elastycznie dodawać i usuwać elementy.
 
 ```java
-List<String> shopList = new ArrayList<>(liczbaElementow);
+List<String> shopList = new ArrayList<>();
+shopList.add("pizza");
+shopList.add("bread");
+shopList.add("milk");
 
 // Stala ilosc elementow
-List<String> test = List.of("Siema", "Witam");
+List<String> test = List.of("Hello", "World");
 ```
 
-## HashSet<E>
+## HashSet
 
 * nie pozwala na duplikaty
-* domyslny rozmiar to 16 elementow
+* domyslny rozmiar to 16 elementow, przy 75% zapelnienia tworzony jest nowy 2x wiekszy
 
 ```java
 Set<Integer> set1 = new HashSet<>();
 set1.add(15);
-System.out.println(set1);
+
 Set<Integer> set2 = Set.of(15, 22, 15); // error: duplicate element - 15
 ```
 
-## ArrayDeque<E>
+## ArrayDeque
 
 Dodajesz elementy na gore/dol stosu i zdejmujesz je z gory/dolu
 **Nie dopuszcza 'null'**
@@ -522,13 +601,3 @@ class MainDeserialization {
 * Liskov substitution ~ 
 * Interface segregation ~ interfejsy nie powinny narzucac klasom czego nie moga robic.
 * Dependency Inversion ~ komponenty powinny zalezec od abstrakcji
-
-
-
-
-
-
-
-
-
-

@@ -1,11 +1,11 @@
-# Cheatsheet for a different stuff
+# Notatki
 
 ## [JAVA](./java)
 
 ## [GIT](./git/README.md)
 
-## [DATA_STRUCTURE](./data_structure/README.md)
+## [Struktury danych](./data_structure/README.md)
 
-## [DATABASES](./databases/README.md)
+## [Bazy danych](./databases/README.md)
 
 ## [VSC](./vsc/README.md)

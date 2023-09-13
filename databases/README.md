@@ -55,30 +55,12 @@ USE dbName;
 SOURCE plik.sql;
 ```
 
-``` sql
-UPDATE nazwaTabeli SET nazwaPola = 'wartosc' WHERE { warunek }; 
-
-DELETE FROM nazwaTabeli WHERE { warunek }; 
-
-TRUNCATE TABLE nazwaTabeli; -- TRUNCATE umozliwia usuniecie wszystkich wierszy z tabeli
-
-SELECT imie, nazwisko, wynagrodzenie AS "Kwota wynagrodzenia" FROM pracownicy; -- Aliasy (AS)
-```
-
 ### Projekcja
 
-Proces wybierania atrybutow ktore maja znalezc sie w wyniku zapytania nazywamy projekcja, np:
+Proces wybierania atrybutow(kolumn) ktore maja znalezc sie w wyniku zapytania nazywamy projekcja, np:
 
 ``` sql
 SELECT imie FROM osoby;
-```
-
-### Literaly
-
-Umieszczene literalu w zapytaniu skutkuje dopisaniem go do kazdego zwroconego wiersza, np (tu 'osoba'):
-
-``` sql
-SELECT imie, nazwisko 'osoba' FROM osoby;
 ```
 
 ## Przydatne funkcje SQL
@@ -97,34 +79,36 @@ SELECT imie, nazwisko 'osoba' FROM osoby;
 | SQRT(n) | Zwraca pierwiastek kwadratowy z n |
 | CURDATE() | Zwraca dzisiejsza date |
 
-Nalezy dodac na koncy AS .. aby wyswietlic wynik dzialania zapytania select ( w tym przypadku )
+```sql
 SELECT 2 + SQRT(ABS(3.75 - 33) * POWER(2, 3)) / ((44/11) - 12.5) AS result;
+```
 
 ## SORTOWANIE
 
 ```sql
-    SELECT name FROM employess ORDER BY name;
-    SELECT name FROM employess ORDER BY name DESC; 
+SELECT name FROM employess ORDER BY name;
+SELECT name FROM employess ORDER BY name DESC; 
 ```
 
-Pierwsze zapytanie domyslnie przyjmuje kolejnosc sortowania ASC czyli od alfabetycznie lub numerycznie rosnaca (wpierw a, b,c lub 1, 2, 3)
-Drugie zapytanie przyjmuje kolejnosc sortowanie DESC czyli na odwrot niz ASC.
-Daty sortujemy od wczesniejszych do pozniejszych lub na odwrot.
+* Pierwsze zapytanie domyslnie przyjmuje kolejnosc sortowania ASC czyli  alfabetycznie.  
+* Drugie zapytanie przyjmuje kolejnosc sortowanie DESC czyli na odwrot niz ASC.
+* Daty sortujemy od wczesniejszych do pozniejszych lub na odwrot.
 
 ## DISTNCT I WHERE
 
+DISTINCT - slowo kluczowe eliminujace powtarzajace sie wartosci
+
 ```sql
-    SELECT DISTINCT name FROM employess WHERE id > 5 ORDER BY id DESC;
+SELECT DISTINCT name FROM employess WHERE id > 5 ORDER BY id DESC;
 ```
 
 Zapytanie to wybierze niepowtarzajace sie imienia dla rekordow o id wiekszym niz 5 posortowane od konca
-DISTINCT - eliminacja powtarzajacych sie wartosci
 
 ## BETWEEN..AND, IN, LIKE, IS NULL
 
 | Nazwa | Przyklad | Dzialanie |
 | -------- |:---------------------:| :-----------:|
-| BETWEEN...AND | x BETWEEN y AND z | SPrawdza czy x znajduje sie w przedziale od y do z WLACZNIE (y musi byc mniejsze od z |
+| BETWEEN...AND | x BETWEEN y AND z | Sprawdza czy x znajduje sie w przedziale od y do z WLACZNIE (y musi byc mniejsze od z |
 | IN | nazwisko IN ("Kowalski", "Nowak", "Kaminski") | sprawdza czy dana wartosc jest rowna przynajmniej jednej z podanych |
 | IS NULL | WHERE data_zwrotu IS NULL | Sprawdza czy dana wartosc jest NULL |
 
@@ -138,26 +122,29 @@ SELECT id, imie FROM pracownicy WHERE wynagrodzenie IS NULL;
 SELECT imie FROM pracownicy WHERE imie LIKE 'Kowal%';
 ```
 
-operator LIKE pozwala na wykorzystanie regexow:
+operator `LIKE`` pozwala na wykorzystanie regexow:
+
 | Znak | Dzialanie |
 | -------- |:---------------------:|
-| '%' | dowolny ciag znakow (zero lub wiecej) |
-| '_' | dokladnie jeden dowolny znak |
+| % | dowolny ciag znakow (zero lub wiecej) |
+| _ | dokladnie jeden dowolny znak |
 
 ## LIMIT
 
 ```sql
-    SELECT name FROM employess LIMIT 5;
-    SELECT name FROM employess LIMIT 2, 5;
+SELECT name FROM employess LIMIT 5;
+SELECT name FROM employess LIMIT 2, 5;
 ```
 
-LIMIT sluszy do otrzymania okreslonej liczby rekordow
-W drugim zapytaniu liczba 2 oznacza ze pomijamy 2 pierwsze wiersze, a liczba 5 liczbe wierszy ktore chcemy wyswietlic
+LIMIT sluszy do otrzymania okreslonej liczby rekordow.  
+W drugim zapytaniu liczba 2 oznacza ze pomijamy 2 pierwsze wiersze, a liczba 5 - liczbe wierszy ktore chcemy wyswietlic.
 
-### DODAJE 5 DNI do aktualnej daty
+### DATE_ADD
+
+W przykladzie ponizej dodanie 5 dni do aktualnej daty:
 
 ```sql
-    SELECT DATE_ADD(NOW(), INTERVAL 5 DAY); 
+SELECT DATE_ADD(NOW(), INTERVAL 5 DAY); 
 ```
 
 ## FUNCKJE AGREGUJACE
@@ -166,7 +153,7 @@ W drugim zapytaniu liczba 2 oznacza ze pomijamy 2 pierwsze wiersze, a liczba 5 l
 | -------- |:---------------------:| ----------:|
 | MAX() | MAX(wyplata) | znajdzie najwieksza wyplate |
 | MIN() | MIN(wyplata) | znajdzie najmniejsza wyplate |
-| AVG() | AVG(wyplata) | zwroci sredni wyplate |
+| AVG() | AVG(wyplata) | zwroci srednia wyplate |
 | COUNT() | COUNT(*) | zwroci liczbe wszystkich wierszy |
 | SUM() | SUM(wyplata) | zsumuje wartosci wszystkich wyplat |
 
@@ -180,7 +167,7 @@ SELECT MAX(wyplata), MIN(wyplata) FROM pracownicy;
 
 ## ZAPYTANIA Z WIELOMA GRUPAMI
 
-Konstruujac takie zapytania konieczne jest zdefiniowanie wyrazenia grupujacego za pomoca GROUP BY
+Konstruujac takie zapytania konieczne jest zdefiniowanie wyrazenia grupujacego za pomoca slow kluczowych `GROUP BY`
 
 ```sql
     SELECT id, AVG(wyplata) FROM pracownicy GROUP BY stanowisko;
