@@ -1,22 +1,24 @@
 /* 
-    author: Raul Wierzbiński
+    @author: Raul Wierzbiński
 */
 
 import java.util.Scanner;
 
 class Main {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);    
+        Scanner scanner = new Scanner(System.in);    
         System.out.println("LICZBY MUSZA BYC LICZBAMI CALKOWITYMI!");
         int start = 1;    
-        System.out.println("Podaj koniec ciągu: ");
-        int finish = scan.nextInt(); 
+        System.out.println("Podaj koniec ciagu: ");
+        int finish = scanner.nextInt(); 
+        scanner.close();
         System.out.println("--------------------------");
-        int sum = start + finish;
-        int c = 0;
-        int mid = (finish + start) / 2;
 
         if(start < finish) {
+            int sum = start + finish;
+            int mid = (sum) / 2;
+            int c = 0;
+            
             for(int i = start; i <= finish; i++) {
                 c++;
             }

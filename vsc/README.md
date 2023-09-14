@@ -26,15 +26,14 @@
 | ctrl+k p                       |    copy path of active file |
 | ctrl+shift+h                   |            replace in files |
 | ctrl+shift+v                   |       open markdown preview |
-| ctrl+<tab>                     |                   open next |
-| ctrl+<home>                    |     go to beginning of file |
-| ctrl+<end>                     |           go to end of file |
-| ctrl+<space>                   |          trigger suggestion |
-| ctrl+<arrow>                   | cursor go next/previos word |
-| ctrl+<enter>                   |           insert line below |
-| ctrl+shift+<enter>             |           insert line above |
+| ctrl+tab                     |                   open next |
+| ctrl+home                    |     go to beginning of file |
+| ctrl+end                     |           go to end of file |
+| ctrl+space                   |          trigger suggestion |
+| ctrl+arrow                   | cursor go next/previos word |
+| ctrl+enter                   |           insert line below |
+| ctrl+shift+enter             |           insert line above |
 | alt+<arrow up/down>            |           move line up/down |
 | alt+<arrow right/left>         | change focused editor group |
 | ctrl+shift+<arrow up/down>     |           copy line up/down |
 | ctrl+alt+shift+<arrow up/down> |            multiple cursors |
-

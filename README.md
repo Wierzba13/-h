@@ -8,4 +8,4 @@
 
 ## [Bazy danych](./databases/README.md)
 
-## [VSC](./vsc/README.md)
+## [VSC keyboard shortcuts](./vsc/README.md)

@@ -2,11 +2,12 @@ import java.util.Scanner;
 
 public class Fizzbuzz {
     public static void main(String args[]) {
-        Scanner s = new Scanner(System.in);
-        System.out.println("Podaj początek zakresu: ");
-        int start = s.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj poczatek zakresu: ");
+        int start = scanner.nextInt();
         System.out.println("Podaj koniec zakresu: ");
-        int finish = s.nextInt();
+        int finish = scanner.nextInt();
+        scanner.close();
         System.out.println("-------------------------------------------------");
         
         for (int i = start; i <= finish; i++) {
@@ -20,11 +21,7 @@ public class Fizzbuzz {
                 fizzOrBuzz = true;
             }
 
-            if (fizzOrBuzz) {
-                System.out.println();
-            } else {
-                System.out.println(String.valueOf(i));
-            }
+            if (!fizzOrBuzz) System.out.println(String.valueOf(i));
         }
     }
 }

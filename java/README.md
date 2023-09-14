@@ -291,30 +291,51 @@ set1.add(15);
 Set<Integer> set2 = Set.of(15, 22, 15); // error: duplicate element - 15
 ```
 
-## ArrayDeque
-
-Dodajesz elementy na gore/dol stosu i zdejmujesz je z gory/dolu
-**Nie dopuszcza 'null'**
-
-```java
-Deque<String> deq1 = new ArrayDeque<>();
-```
-
 ## HashMap<K, V>
 
-Zestaw klucz-wartosc, gdzie:
-klucz - index wskazujacy na wartosc
+Zestaw klucz-wartosc
 
 ```java
-Map<Integer, String> assocc = new HashMap<>();
+Map<Integer, String> assoc = new HashMap<>();
+
+assoc.put(1, "Alice");
+assoc.put(2, "Bob");
+assoc.put(3, "Charlie");
+assoc.put(4, "David");
+
+for (Integer key : assoc.keySet()) {
+    String value = assoc.get(key);
+    System.out.println("Key: " + key + ", Value: " + value);
+}
 ```
 
 ## Logger
 
 ```java
-import java.util.logging.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
-private static Logger logger = Logger.getLogger(handle_exceptions.Main.class.getName());
+public class LoggerExample {
+    // Create a Logger object for the current class
+    private static final Logger logger = Logger.getLogger(LoggerExample.class.getName());
+
+    public static void main(String[] args) {
+        // Log a message with different log levels
+        logger.severe("This is a severe message.");     // Highest severity
+        logger.warning("This is a warning message.");   // Warning
+        logger.info("This is an informational message."); // Informational
+        logger.config("This is a configuration message."); // Configuration
+        logger.fine("This is a fine message.");           // Fine-grained details
+        logger.finer("This is a finer message.");         // Finer-grained details
+        logger.finest("This is the finest message.");     // Lowest severity
+
+        // Set the logging level to display only messages at or above INFO level
+        logger.setLevel(Level.INFO);
+
+        // Log a message with the updated log level
+        logger.info("This is an updated informational message.");
+    }
+}
 ```
 
 * Uzywaj nazwy loggera takiej jak nazwa klasy
@@ -336,31 +357,24 @@ private static Logger logger = Logger.getLogger(handle_exceptions.Main.class.get
   
 ## Dziedziczenie
 
-* Każda klasa, domyslnie rozszerza klase 'Object' (chyba ze sami wskazemy inna za pomoca slowa kluczowego extends)
+* Każda klasa, domyslnie rozszerza klase 'Object'
 * hashCode() - tozsamosc obiektu w kodzie 16-tkowym (cos w rodzaju ID)
 * equals() - sluzy do porownywania obiektow
 * this - odwolanie sie do zmiennej/metody w biezacej klasie
 * super - odwolanie sie do zmiennej/metody w nadrzednej klasie
-* Implementacja domyslnego konstruktora
-
-    ```java
-     public Product() {
-        super();
-    }
-    ```
 
 ## Klasa abstrakcyjna
 
 * Moze zawierac metody abstrakcyjne ale nie musi.
 * Jezeli chociaz jedna metoda jest abstrakcyjna to klasa rowniez musi byc abstrakcyjna.
-* Metody abstrakcyjne MUSISZ rozszerzyc w klasie rozszerzajacej
+* Metody abstrakcyjne MUSISZ zaimplementowac w klasie rozszerzajacej
+* Metoda abstrakcyjna NIE moze zawierac implementacji ani nawet nawiasow klamrowych {}
+* Metoda abstrakcyjna NIE może być statyczna
 
 `Klasy abstrakcyjne sluza jako zdefiniowanie pewnego rodzaju abstrakcyjnego szablonu dla klas je rozszerzajacych.`
 
 ```java
 abstract class Product {
-    // Metoda abstrakcyjna NIE moze zawierac implementacji ani nawet nawiasow klamrowych {}
-    // Metoda abstrakcyjna NIE może być statyczna
     abstract String methodName(arguments);
 
     public String getName() {
@@ -387,7 +401,7 @@ public class Food extends Product {
 
 ```java
 public interface <InterfaceName> {
-    public static final String male = "MALE"; // STALA
+    public static final String sex = "MALE"; // STALA
 
     void sayHello();
     
@@ -398,7 +412,7 @@ public interface <InterfaceName> {
 
 ```
 
-Functional Interface - jest to interface, który posiada tylko jedną metodę abstrakcyjną.
+`Functional Interface` - jest to interface, który posiada tylko jedną metodę abstrakcyjną.
 
 Interface moze rozszerzac inny interface
 
@@ -436,7 +450,7 @@ if(exampleObject instanceof Comparable) {
 * Wątek (Thread) - sciezka wykonania mogaca obejmowac serie roznych wywolan metod.
 * Akcja watku jest implementowana za pomoca metody 'run' z interfejsu 'Runnable'
 * Watek alokuje czesc CPU w czasie do wykonania swojego zadania
-* Jezeli zaczniemy watek X wczesniej od watku Y nie oznacza to ze dzialanie watku X zakonczy sie szybciej niz watku Y
+* Jezeli zaczniemy watek X wczesniej od watku Y nie oznacza to ze dzialanie watku X zakonczy sie szybciej niz dzialanie watku Y
 * return w metodach 'run' lub 'main' zakanczaja watek
 
 Stany watku
@@ -451,17 +465,14 @@ Stany watku
 | TERMINATED | Watek sie zakonczyl |
 
 ```java
-Thread t = new Thread(new ForLoopX(1000L)); // L means its Long value
-t.start(); // start thread
-
 Runnable run = () -> {
     // Thread logic here ...
     for (int i = 0; i < 1000; i++) continue;
 };
-
-Thread t2 = new Thread(run);
-t2.start();
-t2.stop();
+        
+Thread thr = new Thread(run);
+thr.start();
+thr.stop();
 
 try {
     Thread.sleep(3000); // 'Zamrozenie' programu na 3s (1s = 1000ms)
@@ -469,21 +480,11 @@ try {
     e.getMessage();
 }
 
-System.out.println(t2.isAlive());
-System.out.println(t2.getState());
-System.out.println(t2.getId());
-System.out.println(t2.getName());
+System.out.println(thr.isAlive()); // false
+System.out.println(thr.getState()); // TERMINATED
+System.out.println(thr.getId()); // // 10
+System.out.println(thr.getName()); // Thread-0
 ```
-
-## Klasy zagniezdzone
-
-To klasy znajdujące się w innej klasie
-`this` w klasie zagnieżdżonej odnosi się tylko do tej klasy (nie działa na klase w której się znajduje)
-
-* Zagnieżdżona klasa prywatna
-    1. Dostep do jej metod i atrybutow (nawet tych prywatnych) mamy tylko z klasy w ktorej znajduje sie owa klasa zagnieżdżona
-* Anonimowe Klasy Zagnieżdżone
-    1. Umozliwiaja przy tworzeniu instancji, nadpisanie metod dla tylko tej konkretnej instancji Ulatwia korzystanie z interfejsow funkcyjnych
 
 ## Lambda (Funkcje anonimowe)
 

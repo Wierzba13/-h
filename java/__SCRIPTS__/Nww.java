@@ -1,7 +1,7 @@
 //Raul Wierzbinski
 import java.util.Scanner;
 
-public class Main {
+public class Nww {
     public static int nwd(int a, int b) {
         while(a != b) {
             if(a > b) {
@@ -14,11 +14,12 @@ public class Main {
         return a;
     }
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Podaj A: ");
-        int a = scan.nextInt();
+        int a = scanner.nextInt();
         System.out.println("Podaj B: ");
-        int b = scan.nextInt();
+        int b = scanner.nextInt();
+        scanner.close();
         
         System.out.println("Nww: " + ((a * b) / nwd(a, b)));
     }
